@@ -35,6 +35,7 @@ The main branch of *af-reservation-service* located [here](https://github.com/Ba
 ### Prequisites
 > Docker
 
-## Runhning the Project
-- `docker build -t reservation-service-image`
+## Running the Project
+- In root run `gradlew bootJar`
+- `docker build -t reservation-service-image .`
 - `docker run -p 8080:8080 reservation-service-image`
