@@ -24,11 +24,23 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Aspect
 public class SecurityAspect {
+
     private final Logger logger = Logger.getLogger(SecurityAspect.class);
 
+    /**
+     * WebClient injection for WebClientBuilder
+     */
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    /**
+     * Called when pointcut method is implemented. Used for verifying incoming JWT at join point.
+     *
+     * @param pjp       Join Point
+     * @return          If JWT is valid, sets the userDTO for the method at that join point.
+     *                  If JWT is not valid, throws exception and returns not authorized request.
+     * @throws Throwable when JWT cannot be verified.
+     */
     @Around("controllerMethodsPointCut()")
     public Object verifyJwt(ProceedingJoinPoint pjp) throws Throwable {
         // PRODUCTION CODE
@@ -58,6 +70,9 @@ public class SecurityAspect {
         return null;
     }
 
+    /**
+     * Point cut method to run when @Verify is used at join point
+     */
     @Pointcut("@annotation(com.revature.aspects.Verify)")
     private void controllerMethodsPointCut() {
     }
