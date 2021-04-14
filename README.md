@@ -3,9 +3,9 @@ Microservice responsible for reserving space among Revature's digital and physic
 facilities. Part of the AssignForce suite
 
 ## Environment Variables
-Need to add a `.env` file in this directory  
-It should include ```AUTH_SERVER=http://1.2.3.4:5555```   
-or ```AUTH_SERVER=http://${spring.application.authservice}``` if using a discovery system like Consul
+This repository requires one environment variable `AUTH_SERVER` for deployment
+It should be in the form of `${name-of-authorization-service-here}/verify`. The authorization service
+should also be deployed on the same K8 cluster so that discovery is possible.
 
 ## Routes, Requests and Responses
 All requests should have an Authorization header with a valid JWT, and will be rejected 
@@ -93,4 +93,6 @@ Possible returns:
 - `404 NOT FOUND` if invalid reservation ID is provided
 - `406 NOT ACCEPTABLE` if startTime is after endTime
 - `403 FORBIDDEN` if user is attempting to change a reservation that isn't theirs
+    * `admin` users can both cancel and update other users reservations. Updating another user's reservation will 
+    transfer ownership of the reservation to the admin user. This may need change in the future.
 - `409 CONFLICT` if the new times have a conflict with another reservation
